@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: api
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: api
+
+  template:
+    metadata:
+      labels:
+        app: api
+
+    spec:
+      containers:
+        - name: api
+          image: mecaniqa-api:latest
+          imagePullPolicy: IfNotPresent
+
+          command:
+            - sh
+            - -c
+            - java -version && tail -f /dev/null
+
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: MYSQL_HOST
+              value: "mysql"
+
+            - name: MYSQL_PORT
+              value: "3306"
+
+            - name: MYSQL_DATABASE
+              value: "mecaniqa"
+
+            - name: MYSQL_USER
+              value: "root"
+
+            - name: MYSQL_PASSWORD
+              value: "root"
+
+            - name: REDIS_HOST
+              value: "redis"
+
+            - name: REDIS_PORT
+              value: "6379"
